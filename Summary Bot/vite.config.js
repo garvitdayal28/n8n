@@ -12,7 +12,7 @@ export default defineConfig({
         rewrite: (path) =>
           path.replace(
             /^\/api\/n8n/,
-            "/webhook-test/eb22e461-2f50-4fcc-bf3e-d334a17b7766"
+            "/webhook/eb22e461-2f50-4fcc-bf3e-d334a17b7766"
           ),
         secure: true,
       },

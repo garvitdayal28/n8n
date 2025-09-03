@@ -5,7 +5,7 @@ const API_CONFIG = {
   N8N_WEBHOOK_URL: import.meta.env.DEV
     ? "/api/n8n" // Use Vite proxy in development
     : import.meta.env.VITE_N8N_WEBHOOK_URL ||
-      "https://garvitdayal.app.n8n.cloud/webhook-test/eb22e461-2f50-4fcc-bf3e-d334a17b7766",
+      "https://garvitdayal.app.n8n.cloud/webhook/eb22e461-2f50-4fcc-bf3e-d334a17b7766",
   TIMEOUT: 10000, // 10 seconds
 };
 
