@@ -2,9 +2,9 @@
 
 const API_CONFIG = {
   // n8n webhook URL - use proxy in development to avoid CORS
-  N8N_WEBHOOK_URL: import.meta.env.DEV 
-    ? '/api/n8n'  // Use Vite proxy in development
-    : import.meta.env.VITE_N8N_WEBHOOK_URL || 
+  N8N_WEBHOOK_URL: import.meta.env.DEV
+    ? "/api/n8n" // Use Vite proxy in development
+    : import.meta.env.VITE_N8N_WEBHOOK_URL ||
       "https://garvitdayal.app.n8n.cloud/webhook-test/eb22e461-2f50-4fcc-bf3e-d334a17b7766",
   TIMEOUT: 10000, // 10 seconds
 };
@@ -17,7 +17,7 @@ const API_CONFIG = {
 export const sendToN8nWorkflow = async (formData) => {
   try {
     console.log("Sending data to n8n:", formData);
-    
+
     const response = await fetch(API_CONFIG.N8N_WEBHOOK_URL, {
       method: "POST",
       headers: {
@@ -39,12 +39,17 @@ export const sendToN8nWorkflow = async (formData) => {
     return result;
   } catch (error) {
     console.error("Error sending data to n8n workflow:", error);
-    
+
     // If it's a CORS or network error, provide helpful feedback
-    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-      throw new Error('Network error: Please check if the n8n workflow is active and CORS is configured');
+    if (
+      error.name === "TypeError" &&
+      error.message.includes("Failed to fetch")
+    ) {
+      throw new Error(
+        "Network error: Please check if the n8n workflow is active and CORS is configured"
+      );
     }
-    
+
     throw error;
   }
 };

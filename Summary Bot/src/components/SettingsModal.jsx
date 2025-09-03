@@ -1,13 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { X, Eye, EyeOff, Settings } from "lucide-react";
-import { ThemeContext } from "../contexts/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
-const SettingsModal = ({ isOpen, onClose, showLogo, setShowLogo }) => {
+const SettingsModal = ({ isOpen, onClose, showLogo, setShowLogo, isAuthenticated, setIsAuthenticated }) => {
   const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const { isDark } = useContext(ThemeContext);
+  const { isDark } = useTheme();
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +21,6 @@ const SettingsModal = ({ isOpen, onClose, showLogo, setShowLogo }) => {
 
   const handleClose = () => {
     setPassword("");
-    setIsAuthenticated(false);
     setError("");
     setShowPassword(false);
     onClose();
@@ -31,52 +29,69 @@ const SettingsModal = ({ isOpen, onClose, showLogo, setShowLogo }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <>
+      {/* Backdrop */}
       <div
-        className={`${
-          isDark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-        } rounded-lg shadow-xl w-96 max-w-md mx-4`}
-      >
+        className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${isOpen ? 'bg-opacity-50' : 'bg-opacity-0 pointer-events-none'
+          }`}
+        onClick={handleClose}
+      />
+
+      {/* Sidebar */}
+      <div className={`fixed top-0 right-0 h-full w-80 shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+        } ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className={`flex items-center justify-between p-6 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'
+          }`}>
           <div className="flex items-center space-x-2">
             <Settings className="w-5 h-5" />
             <h2 className="text-lg font-semibold">Settings</h2>
           </div>
           <button
             onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className={`transition-colors ${isDark ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+              }`}
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          {!isAuthenticated ? (
-            /* Password Form */
-            <form onSubmit={handlePasswordSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Enter Password to Access Settings
-                </label>
+        <div className="p-6 h-full overflow-y-auto">
+          <div className="space-y-6">
+            {/* Authentication Section */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isDark ? 'border-gray-400' : 'border-gray-500'
+                  }`}>
+                  <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-gray-400' : 'bg-gray-500'
+                    }`}></div>
+                </div>
+                <h3 className="text-sm font-medium">Authentication Required</h3>
+              </div>
+              <p className={`text-xs mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                Please enter the access key to proceed.
+              </p>
+
+              <form onSubmit={handlePasswordSubmit} className="space-y-4">
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`w-full px-3 py-2 pr-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      isDark
-                        ? "bg-gray-700 border-gray-600 text-white"
-                        : "bg-white border-gray-300 text-gray-900"
-                    }`}
-                    placeholder="Enter password"
+                    className={`w-full px-3 py-2 pr-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDark
+                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                      }`}
+                    placeholder="Enter access key"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${isDark ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+                      }`}
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -86,22 +101,24 @@ const SettingsModal = ({ isOpen, onClose, showLogo, setShowLogo }) => {
                   </button>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors"
-              >
-                Access Settings
-              </button>
-            </form>
-          ) : (
-            /* Settings Content */
-            <div className="space-y-6">
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors"
+                >
+                  Unlock
+                </button>
+              </form>
+            </div>
+
+            {/* Company Logo Toggle - Always visible */}
+            <div className={`pt-6 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'
+              }`}>
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium">Show Company Logo</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Toggle visibility of the Google logo in the navbar
+                  <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                    Toggle visibility of the company logo in the navbar
                   </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -111,23 +128,15 @@ const SettingsModal = ({ isOpen, onClose, showLogo, setShowLogo }) => {
                     onChange={(e) => setShowLogo(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  <div className={`w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all after:shadow-sm peer-checked:bg-blue-600 ${isDark ? 'bg-gray-600' : 'bg-gray-300'
+                    }`}></div>
                 </label>
               </div>
-
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <button
-                  onClick={handleClose}
-                  className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition-colors"
-                >
-                  Close Settings
-                </button>
-              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

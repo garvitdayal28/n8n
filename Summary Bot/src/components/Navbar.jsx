@@ -14,44 +14,30 @@ export function Navbar({ onSettingsClick, showLogo = true }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-3 items-center h-16">
-          {/* Left side - QueryBot */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center space-x-3 justify-start"
-          >
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-400 dark:to-amber-600 bg-clip-text text-transparent">
-                Search Bot
-              </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Data Analytics
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Center - Intelligent Data Analytics */}
+          {/* Left side - Search Bot */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex justify-center"
+            className="flex items-center justify-start"
           >
             <motion.h1
-              className="text-2xl md:text-4xl font-bold tracking-tight text-center"
+              className="text-2xl md:text-4xl font-bold tracking-tight"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.1 }}
             >
               <span className="text-gray-900 dark:text-white">
-                Intelligent{" "}
+                Search{" "}
               </span>
               <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent">
-                Data
+                Bot
               </span>
-              <span className="text-gray-900 dark:text-white"> Analytics</span>
             </motion.h1>
           </motion.div>
+
+          {/* Center - Empty */}
+          <div></div>
 
           {/* Right side - Controls */}
           <div className="flex items-center space-x-3 justify-end">

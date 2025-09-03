@@ -8,6 +8,7 @@ import SettingsModal from "./components/SettingsModal";
 function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showLogo, setShowLogo] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Load logo visibility from localStorage on component mount
   useEffect(() => {
@@ -36,7 +37,7 @@ function App() {
         <Navbar onSettingsClick={handleSettingsClick} showLogo={showLogo} />
 
         <main className="flex flex-col min-h-[calc(100vh-4rem)]">
-          <QueryInput />
+          <QueryInput isAuthenticated={isAuthenticated} />
           <Footer />
         </main>
 
@@ -45,6 +46,8 @@ function App() {
           onClose={handleCloseSettings}
           showLogo={showLogo}
           setShowLogo={setShowLogo}
+          isAuthenticated={isAuthenticated}
+          setIsAuthenticated={setIsAuthenticated}
         />
       </div>
     </ThemeProvider>

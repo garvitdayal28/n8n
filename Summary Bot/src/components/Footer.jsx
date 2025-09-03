@@ -11,10 +11,10 @@ export function Footer() {
     >
       <div className="space-y-2">
         <p className="text-gray-600 dark:text-gray-400 text-sm">
-          Powered by AI-driven analytics for intelligent data insights
+          {/* text here */}
         </p>
         <p className="text-gray-500 dark:text-gray-500 text-xs">
-          API Server: https://querybot-production.up.railway.app
+          {/* text here */}
         </p>
       </div>
     </motion.footer>
