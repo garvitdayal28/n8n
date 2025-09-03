@@ -28,10 +28,13 @@ export function Navbar({ onSettingsClick, showLogo = true }) {
               transition={{ duration: 0.8, delay: 0.1 }}
             >
               <span className="text-gray-900 dark:text-white">
-                Search{" "}
+                Market{" "}
               </span>
               <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent">
-                Bot
+                research
+              </span>
+              <span className="text-gray-900 dark:text-white">
+                {" "}bot
               </span>
             </motion.h1>
           </motion.div>
